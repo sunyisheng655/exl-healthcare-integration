@@ -1,0 +1,220 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Synthetic Registration API",
+    "version": "1.0.0",
+    "description": "Local read-only mock source for the EXL integration prototype. All records are fictional. This is custom JSON, not a FHIR endpoint."
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8765"
+    }
+  ],
+  "x-synthetic-data": true,
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "health",
+        "summary": "Check this mock API",
+        "responses": {
+          "200": {
+            "description": "Mock server is available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "system",
+                    "synthetic"
+                  ],
+                  "properties": {
+                    "status": {
+                      "const": "ok"
+                    },
+                    "system": {
+                      "const": "registration-api"
+                    },
+                    "synthetic": {
+                      "const": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/patients": {
+      "get": {
+        "operationId": "listPatients",
+        "summary": "Return the complete loaded patient snapshot; no pagination or name matching",
+        "responses": {
+          "200": {
+            "description": "All loaded synthetic patients",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "items",
+                    "total"
+                  ],
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Patient"
+                      }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/patients/{patient_id}": {
+      "get": {
+        "operationId": "getPatient",
+        "summary": "Find a patient by exact stable synthetic ID",
+        "parameters": [
+          {
+            "name": "patient_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Patient found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Patient"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Patient not found; error is PATIENT_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/openapi.json": {
+      "get": {
+        "operationId": "getOpenApi",
+        "summary": "Return this mock API specification",
+        "responses": {
+          "200": {
+            "description": "OpenAPI specification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Patient": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "patient_id",
+          "display_name",
+          "middle_name",
+          "birth_date",
+          "gender_code",
+          "active",
+          "updated_at"
+        ],
+        "properties": {
+          "patient_id": {
+            "type": "string",
+            "pattern": "^P[0-9]{3}$",
+            "example": "P001"
+          },
+          "display_name": {
+            "type": "string",
+            "description": "Synthetic display name; not a join key."
+          },
+          "middle_name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "birth_date": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "gender_code": {
+            "type": "string",
+            "enum": [
+              "F",
+              "M",
+              "O",
+              "U"
+            ],
+            "description": "Local administrative code: F=female, M=male, O=other, U=unknown. Not a clinical interpretation."
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "UTC timestamp ending in Z."
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "patient_id": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "x-http-behavior": {
+    "head": "Supported on each GET route with identical status/headers and no response body.",
+    "write-methods": "POST, PUT, PATCH, DELETE, OPTIONS, TRACE, CONNECT return 405 JSON and Allow: GET, HEAD.",
+    "unknown-route": "404 JSON with error NOT_FOUND.",
+    "query-parameters": "Not used; no filters are applied.",
+    "snapshot": "The data file is loaded and validated at startup. Restart the server after changing it."
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agentic Healthcare Integration"
+  short_description: "Build and validate mock healthcare system integrations"
+  default_prompt: "Use $agentic-healthcare-integration to implement the agreed single-agent healthcare integration prototype with batch validation and approved-version queries."

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Healthcare Integration Workbench</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script defer src="/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#evidence-title">Skip to validation</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="wordmark"><span class="mark" aria-hidden="true">+</span> Integration Lab</div>
+      <span class="edition">EXL HACKATHON · CHALLENGE 01</span>
+      <span class="model-tag" id="model-label">Loading model configuration</span>
+    </div>
+  </header>
+  <main class="page">
+    <div class="intro">
+      <div>
+        <h1>Healthcare Integration Workbench</h1>
+        <p class="subtitle">Describe what to integrate, review the tests, then query with the approved code.</p>
+      </div>
+      <span class="synthetic">Synthetic patient data only</span>
+    </div>
+
+    <div class="layout">
+      <aside class="left-rail" aria-label="New integration and job history">
+        <section class="composer" aria-labelledby="composer-title">
+          <h2 id="composer-title">New Integration Job</h2>
+          <p class="muted">One agent connects the mock registration REST API, appointments database and observations CSV.</p>
+          <form id="generate-form">
+            <div class="field-label">
+              <label for="goal-input">Integration goal</label>
+              <button class="text-button" id="example-button" type="button" disabled>Use example</button>
+            </div>
+            <textarea id="goal-input" name="goal" rows="5" maxlength="2000" required placeholder="For example, combine records from all three sources by synthetic patient ID." aria-describedby="goal-hint"></textarea>
+            <p class="hint" id="goal-hint">Each job uses the configured OpenRouter model and runs a predefined batch of tests.</p>
+            <label class="repair-option">
+              <input type="checkbox" id="auto-repair" name="allow_auto_repair">
+              <span><strong>Allow automatic repair</strong><small>Up to three repair attempts after a development test fails.</small></span>
+            </label>
+            <button class="button primary full" id="generate-button" type="submit" disabled>Generate integration code</button>
+            <p class="message" id="generate-message" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <section class="history" aria-labelledby="history-title">
+          <div class="section-top">
+            <h2 id="history-title">Job History</h2>
+            <button class="text-button" id="refresh-button" type="button">Refresh</button>
+          </div>
+          <p class="message" id="history-message" role="status" aria-live="polite">Loading local jobs…</p>
+          <ul id="job-list" class="job-list" aria-label="Local jobs"></ul>
+        </section>
+      </aside>
+
+      <section class="evidence" aria-labelledby="evidence-title">
+        <div class="evidence-head">
+          <div>
+            <h2 id="evidence-title" tabindex="-1">Validation &amp; Queries</h2>
+          </div>
+          <span id="job-status" class="status-chip neutral">No job selected</span>
+        </div>
+        <div id="empty-detail" class="empty-state">Select a job from history or start a new integration job.</div>
+        <div id="job-detail" hidden>
+          <div class="run-context">
+            <p id="run-kind" class="eyebrow"></p>
+            <p id="run-meta" class="run-meta"></p>
+            <div class="transcript" aria-label="Job conversation">
+              <div class="turn user-turn"><span class="turn-role">You / Integration goal</span><p id="run-goal" class="run-goal"></p></div>
+              <div class="turn agent-turn"><span class="turn-role">Agent / Job status</span><p id="run-reply"></p></div>
+            </div>
+            <a id="query-jump" class="text-button query-jump" href="#query-title" hidden>Go to patient lookup</a>
+          </div>
+          <p id="controlled-note" class="controlled-note" hidden>In this controlled demo, the first version deliberately returns only one appointment. The model then repairs it.</p>
+          <p id="job-message" class="message" role="status" aria-live="polite"></p>
+          <div id="event-panel" class="event-panel" hidden>
+            <h3>Job Progress</h3>
+            <ol id="event-list"></ol>
+          </div>
+          <div id="report-panel" hidden>
+            <div id="test-summary" class="test-summary" aria-label="Test summary"></div>
+            <div class="report-section">
+              <div class="section-top"><h3>Development Tests &amp; Code Versions</h3></div>
+              <p class="hint">Expand an attempt to review its test cases, differences, integration plan and source code.</p>
+              <div id="attempt-list" class="attempt-list"></div>
+            </div>
+          </div>
+          <section id="approval-panel" class="action-section" aria-labelledby="approval-title" hidden>
+            <h3 id="approval-title">Version Approval</h3>
+            <p id="approval-description" class="muted"></p>
+            <div class="artifact-line"><span id="approval-filename"></span><code id="approval-hash"></code></div>
+            <button class="button primary" id="approve-button" type="button" disabled>Approve this version</button>
+            <p id="approval-message" class="message" role="status" aria-live="polite"></p>
+          </section>
+
+          <section id="query-panel" class="action-section query-section" aria-labelledby="query-title" hidden>
+            <h3 id="query-title" tabindex="-1">Patient Lookup</h3>
+            <p id="query-description" class="muted">Run the approved integration code against all three mock sources.</p>
+            <form id="query-form" class="query-form">
+              <div>
+                <label for="patient-id">Synthetic patient ID</label>
+                <input id="patient-id" name="patient_id" type="text" value="P001" maxlength="64" required spellcheck="false" autocomplete="off" disabled>
+              </div>
+              <button class="button primary" id="query-button" type="submit" disabled>Look up patient</button>
+            </form>
+            <p id="query-message" class="message" role="status" aria-live="polite"></p>
+            <div id="query-result" hidden></div>
+          </section>
+        </div>
+      </section>
+    </div>
+    <footer class="footer"><span>INTEGRATION LAB / LOCAL</span><span>REST · SQLite · CSV</span></footer>
+  </main>
+</body>
+</html>

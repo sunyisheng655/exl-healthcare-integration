@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:exl-demo:patient-summary-v1",
+  "title": "Bounded synthetic patient summary v1",
+  "description": "A custom integration record for synthetic data; not a complete FHIR resource or clinical assessment.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["patient_id", "found", "patient", "appointments", "observations", "provenance"],
+  "properties": {
+    "patient_id": {"type": "string", "minLength": 1},
+    "found": {"type": "boolean"},
+    "patient": {"oneOf": [{"$ref": "#/$defs/patient"}, {"type": "null"}]},
+    "appointments": {"type": "array", "items": {"$ref": "#/$defs/appointment"}, "uniqueItems": true},
+    "observations": {"type": "array", "items": {"$ref": "#/$defs/observation"}, "uniqueItems": true},
+    "provenance": {
+      "const": {"patient": "registration-api", "appointments": "appointments-db", "observations": "observations-csv"}
+    }
+  },
+  "allOf": [{
+    "if": {"properties": {"found": {"const": false}}},
+    "then": {"properties": {"patient": {"type": "null"}, "appointments": {"maxItems": 0}, "observations": {"maxItems": 0}}},
+    "else": {"properties": {"patient": {"$ref": "#/$defs/patient"}}}
+  }],
+  "$defs": {
+    "timestamp": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"},
+    "patient": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["patient_id", "display_name", "middle_name", "birth_date", "gender", "active", "updated_at"],
+      "properties": {
+        "patient_id": {"type": "string", "minLength": 1},
+        "display_name": {"type": "string", "minLength": 1},
+        "middle_name": {"type": ["string", "null"]},
+        "birth_date": {"type": ["string", "null"], "format": "date"},
+        "gender": {"enum": ["female", "male", "other", "unknown"]},
+        "active": {"type": "boolean"},
+        "updated_at": {"$ref": "#/$defs/timestamp"}
+      }
+    },
+    "appointment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["appointment_id", "patient_id", "scheduled_at", "department_code", "visit_type", "status", "updated_at"],
+      "properties": {
+        "appointment_id": {"type": "string", "minLength": 1},
+        "patient_id": {"type": "string", "minLength": 1},
+        "scheduled_at": {"$ref": "#/$defs/timestamp"},
+        "department_code": {"enum": ["GP", "RAD", "LAB"]},
+        "visit_type": {"enum": ["in_person", "video"]},
+        "status": {"enum": ["booked", "cancelled", "done"]},
+        "updated_at": {"$ref": "#/$defs/timestamp"}
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["observation_id", "patient_id", "test_code", "value", "unit", "observed_at", "status"],
+      "properties": {
+        "observation_id": {"type": "string", "minLength": 1},
+        "patient_id": {"type": "string", "minLength": 1},
+        "test_code": {"enum": ["DEMO_A", "DEMO_B", "DEMO_C"]},
+        "value": {"oneOf": [{"type": "string", "pattern": "^-?(0|[1-9][0-9]*)\\.[0-9]{2}$"}, {"type": "null"}]},
+        "unit": {"enum": ["arb.units", null]},
+        "observed_at": {"$ref": "#/$defs/timestamp"},
+        "status": {"enum": ["final", "pending"]}
+      }
+    }
+  }
+}

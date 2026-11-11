@@ -1,0 +1,50 @@
+{
+  "registry_version": "mock-source-registry-v1",
+  "source_contract_version": "mock-healthcare-sources-v1",
+  "synthetic": true,
+  "purpose": "EXL Challenge 01 local integration prototype",
+  "provenance": "Self-generated synthetic demo fixtures; no real patients, hospitals or employer records; not a Synthea export.",
+  "path_resolution": "Resolve local paths relative to this registry file, not the process working directory.",
+  "contract_document": "contracts.md",
+  "sources": [
+    {
+      "id": "registration-api",
+      "type": "rest",
+      "base_url": "http://127.0.0.1:8765",
+      "start_command": ["python3", "serve_registration_api.py", "--host", "127.0.0.1", "--port", "8765"],
+      "metadata_path": "registration-api/openapi.json",
+      "fixture_path": "registration-api/patients.json",
+      "list_path": "/patients",
+      "item_path_template": "/patients/{patient_id}",
+      "identity_field": "patient_id",
+      "initial_record_count": 20,
+      "access": "read-only",
+      "runtime_note": "A local mock server; the URL is available only after the documented start command succeeds. Change base_url if using another port."
+    },
+    {
+      "id": "appointments-db",
+      "type": "sqlite",
+      "database_path": "appointments-db/appointments.sqlite3",
+      "schema_path": "appointments-db/schema.sql",
+      "seed_path": "appointments-db/seed.sql",
+      "table": "appointments",
+      "primary_key": "appt_id",
+      "identity_field": "person_no",
+      "initial_record_count": 50,
+      "access": "read-only",
+      "sqlite_uri_mode": "ro"
+    },
+    {
+      "id": "observations-csv",
+      "type": "csv",
+      "data_path": "observations-csv/observations.csv",
+      "encoding": "utf-8",
+      "delimiter": ",",
+      "has_header": true,
+      "primary_key": "obs_id",
+      "identity_field": "PatientID",
+      "initial_record_count": 80,
+      "access": "read-only"
+    }
+  ]
+}

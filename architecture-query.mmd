@@ -1,0 +1,12 @@
+flowchart LR
+  UI["Chat UI + query router<br/>Single / Batch query<br/>validate allowed parameters"] --> R["Approved query runner<br/>verify binding, load pinned code"]
+  REG["Approved artifact registry<br/>code + contract + test bindings"] --> R
+  R <-->|read-only data access| SRC["3 fixed mock sources<br/>REST / SQL / CSV"]
+  R --> OUT["Actual result + provenance<br/>record status + code version"]
+  R -->|invalid approval| BLOCK["Block query<br/>develop or re-approve"]
+  classDef fixed fill:#f1f5f9,stroke:#64748b,color:#0f172a;
+  classDef artifact fill:#dcfce7,stroke:#15803d,color:#052e16;
+  classDef gate fill:#fef3c7,stroke:#b45309,color:#451a03;
+  class SRC fixed;
+  class REG,OUT artifact;
+  class BLOCK gate;

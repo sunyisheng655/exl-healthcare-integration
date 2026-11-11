@@ -1,0 +1,182 @@
+[
+  {
+    "patient_id": "P001",
+    "display_name": "Synthetic Patient 001",
+    "middle_name": null,
+    "birth_date": "1953-02-04",
+    "gender_code": "F",
+    "active": true,
+    "updated_at": "2026-11-11T09:01:00Z"
+  },
+  {
+    "patient_id": "P002",
+    "display_name": "Demo Alex",
+    "middle_name": "Synthetic-M02",
+    "birth_date": "1956-03-07",
+    "gender_code": "M",
+    "active": true,
+    "updated_at": "2026-11-11T09:02:00Z"
+  },
+  {
+    "patient_id": "P003",
+    "display_name": "Demo Alex",
+    "middle_name": null,
+    "birth_date": "1959-04-10",
+    "gender_code": "O",
+    "active": true,
+    "updated_at": "2026-11-11T09:03:00Z"
+  },
+  {
+    "patient_id": "P004",
+    "display_name": "Synthetic Patient 004",
+    "middle_name": "Synthetic-M04",
+    "birth_date": "1962-05-13",
+    "gender_code": "U",
+    "active": true,
+    "updated_at": "2026-11-11T09:04:00Z"
+  },
+  {
+    "patient_id": "P005",
+    "display_name": "Synthetic Patient 005",
+    "middle_name": null,
+    "birth_date": "1965-06-16",
+    "gender_code": "F",
+    "active": true,
+    "updated_at": "2026-11-11T09:05:00Z"
+  },
+  {
+    "patient_id": "P006",
+    "display_name": "Synthetic Patient 006",
+    "middle_name": "Synthetic-M06",
+    "birth_date": "1968-07-19",
+    "gender_code": "M",
+    "active": true,
+    "updated_at": "2026-11-11T09:06:00Z"
+  },
+  {
+    "patient_id": "P007",
+    "display_name": "Synthetic Patient 007",
+    "middle_name": null,
+    "birth_date": "1971-08-22",
+    "gender_code": "O",
+    "active": true,
+    "updated_at": "2026-11-11T09:07:00Z"
+  },
+  {
+    "patient_id": "P008",
+    "display_name": "Synthetic Patient 008",
+    "middle_name": "Synthetic-M08",
+    "birth_date": "1974-09-25",
+    "gender_code": "U",
+    "active": false,
+    "updated_at": "2026-11-11T09:08:00Z"
+  },
+  {
+    "patient_id": "P009",
+    "display_name": "Synthetic Patient 009",
+    "middle_name": null,
+    "birth_date": "1977-10-01",
+    "gender_code": "U",
+    "active": true,
+    "updated_at": "2026-11-11T09:09:00Z"
+  },
+  {
+    "patient_id": "P010",
+    "display_name": "Synthetic Patient 010",
+    "middle_name": "Synthetic-M10",
+    "birth_date": null,
+    "gender_code": "M",
+    "active": true,
+    "updated_at": "2026-11-11T09:10:00Z"
+  },
+  {
+    "patient_id": "P011",
+    "display_name": "Synthetic Patient 011",
+    "middle_name": null,
+    "birth_date": "1983-12-07",
+    "gender_code": "O",
+    "active": true,
+    "updated_at": "2026-11-11T09:11:00Z"
+  },
+  {
+    "patient_id": "P012",
+    "display_name": "Synthetic Patient 012",
+    "middle_name": "Synthetic-M12",
+    "birth_date": "1986-01-10",
+    "gender_code": "U",
+    "active": true,
+    "updated_at": "2026-11-11T09:12:00Z"
+  },
+  {
+    "patient_id": "P013",
+    "display_name": "Synthetic Patient 013",
+    "middle_name": null,
+    "birth_date": "1989-02-13",
+    "gender_code": "F",
+    "active": true,
+    "updated_at": "2026-11-11T09:13:00Z"
+  },
+  {
+    "patient_id": "P014",
+    "display_name": "Synthetic Patient 014",
+    "middle_name": "Synthetic-M14",
+    "birth_date": "1992-03-16",
+    "gender_code": "M",
+    "active": true,
+    "updated_at": "2026-11-11T09:14:00Z"
+  },
+  {
+    "patient_id": "P015",
+    "display_name": "Synthetic Patient 015",
+    "middle_name": null,
+    "birth_date": "1995-04-19",
+    "gender_code": "O",
+    "active": true,
+    "updated_at": "2026-11-11T09:15:00Z"
+  },
+  {
+    "patient_id": "P016",
+    "display_name": "Synthetic Patient 016",
+    "middle_name": "Synthetic-M16",
+    "birth_date": "1998-05-22",
+    "gender_code": "U",
+    "active": true,
+    "updated_at": "2026-11-11T09:16:00Z"
+  },
+  {
+    "patient_id": "P017",
+    "display_name": "Synthetic Patient 017",
+    "middle_name": null,
+    "birth_date": "2001-06-25",
+    "gender_code": "F",
+    "active": true,
+    "updated_at": "2026-11-11T09:17:00Z"
+  },
+  {
+    "patient_id": "P018",
+    "display_name": "Synthetic Patient 018",
+    "middle_name": "Synthetic-M18",
+    "birth_date": "2004-07-01",
+    "gender_code": "M",
+    "active": true,
+    "updated_at": "2026-11-11T09:18:00Z"
+  },
+  {
+    "patient_id": "P019",
+    "display_name": "Synthetic Patient 019",
+    "middle_name": null,
+    "birth_date": "1952-08-04",
+    "gender_code": "O",
+    "active": true,
+    "updated_at": "2026-11-11T09:19:00Z"
+  },
+  {
+    "patient_id": "P020",
+    "display_name": "Synthetic Patient 020",
+    "middle_name": "Synthetic-M20",
+    "birth_date": "1955-09-07",
+    "gender_code": "U",
+    "active": true,
+    "updated_at": "2026-11-11T09:20:00Z"
+  }
+]

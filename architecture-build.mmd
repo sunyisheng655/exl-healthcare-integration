@@ -1,0 +1,21 @@
+flowchart LR
+  UI["Chat UI + mode router<br/>Generate / Batch validation"] --> AG["ONE Agent + LLM<br/>discover, plan, generate, repair"]
+  DOC["Fixed metadata + Skill<br/>API / SQL / CSV specs<br/>target output contract"] --> AG
+  AG -->|candidate code + version hash| RUN["Candidate test runner<br/>isolated mock-only execution"]
+  UI -->|batch tests| RUN
+  SRC["3 fixed mock sources<br/>REST / SQL / CSV"] -->|read-only data| RUN
+  RUN -->|actual output + logs| VAL["Fixed validator + report<br/>correctness and completeness"]
+  GOLD["Evaluator-private baseline<br/>expected results + validator<br/>not accessible to candidate code"] --> VAL
+  VAL -->|failure report| LIMIT{"Repair permitted<br/>and budget left?"}
+  LIMIT -->|yes: same Agent| AG
+  LIMIT -->|no / unclear rules| STOP["Stop + human review"]
+  VAL -->|passed required checks| HUMAN["Human review<br/>approve exact version"]
+  HUMAN --> REG["Approved artifact registry<br/>pinned code + contract + test bindings"]
+  classDef agent fill:#dbeafe,stroke:#2563eb,color:#172554,stroke-width:2px;
+  classDef fixed fill:#f1f5f9,stroke:#64748b,color:#0f172a;
+  classDef gate fill:#fef3c7,stroke:#b45309,color:#451a03;
+  classDef artifact fill:#dcfce7,stroke:#15803d,color:#052e16;
+  class AG agent;
+  class DOC,SRC,GOLD fixed;
+  class LIMIT,HUMAN,STOP gate;
+  class REG artifact;
