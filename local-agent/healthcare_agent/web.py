@@ -38,7 +38,10 @@ MAX_REPORT_BYTES = 16 * 1024 * 1024
 MAX_REPAIRS = 3
 JOB_TIMEOUT = 360
 SECRET = re.compile(r"(?i)\b(?:sk-(?:or-)?[a-z0-9_-]{4,}|Bearer\s+[a-z0-9_.~-]+)")
-LOCAL_PATH = re.compile(r"(?i)(?:/(?:Users|home|var|private|tmp|Volumes|opt|etc|dev|usr|Library|System)/|[A-Z]:[\\/])[^\r\n\t'\"<>]*")
+LOCAL_PATH = re.compile(
+    r"(?i)(?:/(?:Users|home|var|private|tmp|Volumes|opt|etc|dev|usr|Library|System)/"
+    r"|(?<![A-Z0-9_])[A-Z]:[\\/])[^\r\n\t'\"<>]*"
+)
 STATUS = {"PASSED", "FAILED", "BLOCKED", "NEEDS_CLARIFICATION", "AWAITING_REPAIR_AUTHORIZATION", "NOT_PERFORMED"}
 
 

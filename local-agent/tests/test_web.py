@@ -147,10 +147,16 @@ class WebAccessTests(WebServerTestCase):
         source = f"# {marker}\n"
         (fake_job / "candidate-01.py").write_text(source, encoding="utf-8")
         (fake_job / "candidate-02.py").write_text("# exists but is unlisted\n", encoding="utf-8")
+        windows_path = "C:/workspace/private-config.json"
+        windows_source = f'path = "{windows_path}"\n'
+        (fake_job / "candidate-03.py").write_text(windows_source, encoding="utf-8")
         (fake_job / "report.json").write_text(json.dumps({
             "job_id": fake_job.name, "status": "FAILED", "goal": "Fixture job",
             "reason": marker, "attempts": [{
                 "candidate": "candidate-01.py", "code_sha256": hashlib.sha256(source.encode()).hexdigest(),
+                "development": {"status": "FAILED"},
+            }, {
+                "candidate": "candidate-03.py", "code_sha256": hashlib.sha256(windows_source.encode()).hexdigest(),
                 "development": {"status": "FAILED"},
             }],
         }), encoding="utf-8")
@@ -164,6 +170,9 @@ class WebAccessTests(WebServerTestCase):
             listed = self.request("GET", f"{job_url}/code/candidate-01.py")
             self.assert_rejected(listed)
             self.assertNotIn(marker.encode(), listed[-1])
+        private_path = self.request("GET", f"{job_url}/code/candidate-03.py")
+        self.assert_rejected(private_path)
+        self.assertNotIn(windows_path.encode(), private_path[-1])
         for path in (
             "/.env", f"{job_url}/code/candidate-02.py",
             f"{job_url}/code/report.json", f"{job_url}/code/../.env",
@@ -183,7 +192,8 @@ class WebWorkflowTests(WebServerTestCase):
             raise unittest.SkipTest("Requires the real macOS candidate sandbox")
 
     def test_asynchronous_repair_report_approval_query_and_tamper_rejection(self):
-        client = self.client = GatedModel(BAD, REFERENCE)
+        candidate = REFERENCE + "\n# Example mock API: http://127.0.0.1:8765\n"
+        client = self.client = GatedModel(BAD, candidate)
         try:
             job_url = self.create_job(repair=True)
             self.assertTrue(client.started.wait(timeout=4))
@@ -206,6 +216,7 @@ class WebWorkflowTests(WebServerTestCase):
 
         status, version = self.get_json(f"{job_url}/code/{final['candidate']}")
         self.assertEqual(status, 200, version)
+        self.assertEqual(version["code"], candidate)
         self.assertEqual(version["sha256"], hashlib.sha256(version["code"].encode()).hexdigest())
         self.assertEqual(version["sha256"], final["code_sha256"])
         status, _, body = self.post(f"{job_url}/approve", {"code_sha256": version["sha256"]})
