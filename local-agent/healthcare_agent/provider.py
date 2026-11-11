@@ -16,6 +16,7 @@ import time
 from urllib.parse import urlsplit
 
 DEFAULT_MODEL = "z-ai/glm-4.7"
+DEFAULT_REQUEST_TIMEOUT_SECONDS = 180
 MAX_RESPONSE_BYTES = 8 * 1024 * 1024
 _TEST_KEYS = {"test-key", "test-openrouter-key"}
 
@@ -39,7 +40,7 @@ def _positive_timeout(value: float) -> float:
 class OpenRouterClient:
     def __init__(self, api_key: str, model: str = DEFAULT_MODEL,
                  base_url: str = "https://openrouter.ai/api/v1",
-                 timeout_seconds: float = 90, max_tokens: int = 6000):
+                 timeout_seconds: float = DEFAULT_REQUEST_TIMEOUT_SECONDS, max_tokens: int = 6000):
         if not isinstance(api_key, str) or not api_key.strip():
             raise ProviderError("missing_api_key", "Set OPENROUTER_API_KEY before model calls.")
         if any(c.isspace() or ord(c) < 32 for c in api_key):
@@ -161,7 +162,9 @@ class OpenRouterClient:
         except ProviderError:
             raise
         except (TimeoutError, socket.timeout):
-            raise ProviderError("timeout", "OpenRouter request timed out; no automatic retry was made.") from None
+            raise ProviderError(
+                "timeout", f"OpenRouter request timed out after {budget:g} seconds. No automatic retry was made."
+            ) from None
         except (OSError, http.client.HTTPException):
             raise ProviderError("network_error", "OpenRouter connection failed; check network access and retry explicitly.") from None
         finally:

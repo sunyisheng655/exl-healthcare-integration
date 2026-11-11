@@ -154,10 +154,11 @@ class ProviderTests(unittest.TestCase):
             self.assert_code("incomplete_response", lambda: self.client(base).complete([], []))
 
     def test_caller_deadline_caps_client_timeout(self):
-        with fixture_server([{"delay": 0.15}]) as (base, _):
+        with fixture_server([{"delay": 0.15}]) as (base, seen):
             start = time.monotonic()
-            self.assert_code("timeout", lambda: self.client(base, timeout_seconds=10).complete([], [], timeout_seconds=0.03))
+            self.assert_code("timeout", lambda: self.client(base).complete([], [], timeout_seconds=0.03))
             self.assertLess(time.monotonic() - start, 1)
+            self.assertEqual(len(seen), 1)
 
     def test_missing_key_and_unsafe_base_urls_fail_before_network(self):
         self.assert_code("missing_api_key", lambda: OpenRouterClient(""))

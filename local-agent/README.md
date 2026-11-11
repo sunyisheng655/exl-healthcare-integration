@@ -49,7 +49,7 @@ python3 agent.py run --model x-ai/grok-4.3 --auto-repair --max-repairs 2 \
   --goal 'Connect the three mock systems and return the complete patient summary by patient ID.'
 ```
 
-`--auto-repair` 明确授权同一任务中根据失败反馈改候选代码。省略它会在开发测试失败后停止并报告。默认最多修复 3 次、总时限 360 秒，模型调用另有次数和输出长度限制。OpenRouter 真实调用消耗账户用量；程序不会自动换模型、重复提交网络失败的请求或充值。
+`--auto-repair` 明确授权同一任务中根据失败反馈改候选代码。省略它会在开发测试失败后停止并报告。默认最多修复 3 次，任务总时限为 360 秒。单次 OpenRouter 请求最多等 180 秒，并受任务剩余时间限制。模型调用另有次数和输出长度限制。OpenRouter 真实调用消耗账户用量；程序不会自动换模型、重复提交网络失败的请求或充值。
 
 本地命令会启动并清理它自己使用的临时挂号 API。也可以用 `--api-url http://127.0.0.1:8765` 复用手动启动的模拟 API。SQLite 和 CSV 都来自同一项目的 [mock-systems](../mock-systems/README.md)。
 
